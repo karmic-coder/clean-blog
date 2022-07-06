@@ -11127,6 +11127,16 @@ header.masthead {
   background-size: cover;
   background-attachment: scroll;
 }
+header.masthead2 {
+  position: relative;
+  margin-bottom: 3rem;
+  padding-top: calc(2rem + 57px);
+  padding-bottom: 2rem;
+  background: no-repeat center center;
+  background-color: #6c757d;
+  background-size: cover;
+  background-attachment: scroll;
+}
 header.masthead:before {
   content: "";
   position: absolute;
@@ -11137,10 +11147,14 @@ header.masthead:before {
   background-color: #212529;
   opacity: 0.5;
 }
+header#newuser,
 header.masthead .page-heading,
 header.masthead .post-heading,
 header.masthead .site-heading {
   color: #fff;
+}
+header#newuser{
+  margin-bottom:-1rem;
 }
 header.masthead .page-heading,
 header.masthead .site-heading {

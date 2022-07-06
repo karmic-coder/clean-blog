@@ -16,7 +16,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 const notfound = (req, res, next) => {
   // res.status(404).send("Not found");
-  res.redirect("/");
+  res.status(404).render("404");
 };
 
 const maint = (req, res) => {
@@ -47,10 +47,10 @@ app.get("/post/:id", async (req, res) => {
     if (blogpost) {
       return res.render("post", { blogpost });
     } else {
-      res.redirect("/");
+      res.status(404).render("404");
     }
   } catch {
-    res.redirect("/");
+    res.status(404).render("404");
   }
 });
 app.post("/posts/store", async (req, res) => {
@@ -61,8 +61,30 @@ app.post("/posts/store", async (req, res) => {
     res.send(error);
   }
 });
-// console.log(req.body);
-// });
+
+app.get("/register", (req, res) => {
+  res.render("register");
+});
+
+app.post("/register", (req, res) => {
+  res.json(req.body);
+});
+
+app.get("/login", (req, res) => {
+  res.render("login");
+});
+
+app.post("/login", (req, res) => {
+  res.json(req.body);
+});
+
+app.get("/reset", (req, res) => {
+  res.render("reset");
+});
+
+app.post("/reset", (req, res) => {
+  res.json(req.body);
+});
 
 app.use(notfound);
 
