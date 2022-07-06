@@ -7,17 +7,21 @@
         <%- include('layouts/navbar'); -%>
 
             <!-- Page Header-->
-            <header class="masthead" style="background-image: url('assets/img/post-bg.jpg')">
+            <header class="masthead" style="background-image: url('/assets/img/post-bg.jpg')">
                 <div class="container position-relative px-4 px-lg-5">
                     <div class="row gx-4 gx-lg-5 justify-content-center">
                         <div class="col-md-10 col-lg-8 col-xl-7">
                             <div class="post-heading">
-                                <h1>Man must explore, and this is exploration at its greatest</h1>
-                                <h2 class="subheading">Problems look mighty small from 150 miles up</h2>
+                                <h1>
+                                    <%=blogpost.title%>
+                                </h1>
+                                <h2 class="subheading">(subheading)</h2>
                                 <span class="meta">
                                     Posted by
-                                    <a href="#!">Start Bootstrap</a>
-                                    on August 24, 2022
+                                    <a href="#!">
+                                        <%=blogpost.username%>
+                                    </a>
+                                    on <%=blogpost.datePosted.toDateString()%>
                                 </span>
                             </div>
                         </div>
@@ -29,7 +33,8 @@
                 <div class="container px-4 px-lg-5">
                     <div class="row gx-4 gx-lg-5 justify-content-center">
                         <div class="col-md-10 col-lg-8 col-xl-7">
-                            <p>Never in all their history have men been able truly to conceive of the world as
+                            <%=blogpost.body%>
+                                <!-- <p>Never in all their history have men been able truly to conceive of the world as
                                 one: a single
                                 sphere, a globe, having the qualities of a globe, a round earth in which all the
                                 directions
@@ -85,7 +90,7 @@
                                 so fragile, so delicate, that if you touched it with a finger it would crumble
                                 and fall apart.
                                 Seeing this has to change a man.</p>
-                            <a href="#!"><img class="img-fluid" src="assets/img/post-sample-image.jpg" alt="..." /></a>
+                            <a href="#!"><img class="img-fluid" src="/assets/img/post-sample-image.jpg" alt="..." /></a>
                             <span class="caption text-muted">To go places and do things that have never been
                                 done before –
                                 that’s what living is all about.</span>
@@ -103,7 +108,7 @@
                                 <a href="http://spaceipsum.com/">Space Ipsum</a>
                                 &middot; Images by
                                 <a href="https://www.flickr.com/photos/nasacommons/">NASA on The Commons</a>
-                            </p>
+                            </p> -->
                         </div>
                     </div>
                 </div>

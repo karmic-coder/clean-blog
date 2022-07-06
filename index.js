@@ -1,6 +1,7 @@
+require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
-mongoose.connect("mongodb://localhost/my_database", { useNewUrlParser: true });
+mongoose.connect(process.env.MONGODB, { useNewUrlParser: true });
 const app = new express();
 const path = require("path");
 const ejs = require("ejs");
@@ -11,8 +12,23 @@ app.set("view engine", "ejs");
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.get("/", (req, res) => {
-  res.render("index");
+// console.log(process.env.LINKEDIN);
+
+const notfound = (req, res, next) => {
+  // res.status(404).send("Not found");
+  res.redirect("/");
+};
+
+const maint = (req, res) => {
+  res.send("Site Under Maintenance, please try back later!");
+};
+
+// app.use(maint);
+
+app.get("/", async (req, res) => {
+  const blogposts = await BlogPost.find({});
+  // console.log(blogposts);
+  res.render("index", { blogposts });
 });
 app.get("/about", (req, res) => {
   res.render("about");
@@ -23,8 +39,19 @@ app.get("/contact", (req, res) => {
 app.get("/posts/new", (req, res) => {
   res.render("create");
 });
-app.get("/post", (req, res) => {
-  res.render("post");
+app.get("/post/:id", async (req, res) => {
+  // console.log(req.params.id);
+  try {
+    const blogpost = await BlogPost.findById(req.params.id);
+    // console.log({ blogpost });
+    if (blogpost) {
+      return res.render("post", { blogpost });
+    } else {
+      res.redirect("/");
+    }
+  } catch {
+    res.redirect("/");
+  }
 });
 app.post("/posts/store", async (req, res) => {
   try {
@@ -37,6 +64,8 @@ app.post("/posts/store", async (req, res) => {
 // console.log(req.body);
 // });
 
-app.listen(3000, () => {
+app.use(notfound);
+
+app.listen(3000, "0.0.0.0", () => {
   console.log("App listening on localhost:3000");
 });

@@ -2,3 +2,4 @@ startbootstrap-clean-blog-gh-pages/
 startbootstrap-clean-blog-gh-pages.zip
 node_modules/
 testbed/
+.env
