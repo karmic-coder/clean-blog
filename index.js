@@ -11,6 +11,15 @@ app.use(express.static("public"));
 app.set("view engine", "ejs");
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+const fileUpload = require("express-fileupload");
+
+const fieldsNotNull = (req, res, next) => {
+  if (req.files == null || req.body.title == null || req.body.body) {
+    return res.redirect("/posts/new");
+  }
+  next();
+};
+// app.use(fileUpload())
 
 // console.log(process.env.LINKEDIN);
 
@@ -53,13 +62,19 @@ app.get("/post/:id", async (req, res) => {
     res.status(404).render("404");
   }
 });
-app.post("/posts/store", async (req, res) => {
-  try {
-    await BlogPost.create(req.body);
-    return res.redirect("/");
-  } catch (error) {
-    res.send(error);
-  }
+app.post("/posts/store", fileUpload(), fieldsNotNull, (req, res) => {
+  // try {
+  let image = req.files.image;
+  image.mv(
+    path.resolve(__dirname, "public/upload/img", image.name),
+    async error => {
+      await BlogPost.create({
+        ...req.body,
+        image: "/upload/img/" + image.name,
+      });
+      res.redirect("/");
+    }
+  );
 });
 
 app.get("/register", (req, res) => {
