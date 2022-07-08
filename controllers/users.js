@@ -25,7 +25,7 @@ const loginUser = (req, res) => {
           //   console.log("login successful", req.session.userId);
           res.redirect("/");
         } else {
-          //   console.log("login FAILED", error);
+          console.log("login FAILED", error);
           res.redirect("/login");
         }
       });

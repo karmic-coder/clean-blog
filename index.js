@@ -2,6 +2,7 @@ require("dotenv").config();
 
 global.loggedIn = null;
 const express = require("express");
+const helmet = require("helmet");
 const app = new express();
 const mongoose = require("mongoose");
 const fileUpload = require("express-fileupload");
@@ -15,6 +16,7 @@ const pages = require("./controllers/pages");
 
 const { authRequired, redirectIfAuthenticated } = require("./middleware/auth");
 
+app.use(helmet.hidePoweredBy());
 app.use(
   session({
     secret: process.env.SESSION_SECRET,

@@ -3,7 +3,8 @@ const User = require("../models/User");
 const authRequired = (req, res, next) => {
   User.findById(req.session.userId, (error, user) => {
     if (error || !user) {
-      return res.redirect("/");
+      return res.status(401).render("401");
+      // return res.redirect("/");
       //   next();
     }
     next();
