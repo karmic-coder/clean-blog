@@ -1,108 +1,52 @@
 require("dotenv").config();
+
 const express = require("express");
-const mongoose = require("mongoose");
-mongoose.connect(process.env.MONGODB, { useNewUrlParser: true });
 const app = new express();
+const mongoose = require("mongoose");
+const fileUpload = require("express-fileupload");
 const path = require("path");
 const ejs = require("ejs");
 const bodyParser = require("body-parser");
-const BlogPost = require("./models/BlogPost");
+
+const posts = require("./controllers/posts");
+const pages = require("./controllers/pages");
+
 app.use(express.static("public"));
 app.set("view engine", "ejs");
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-const fileUpload = require("express-fileupload");
+app.use(fileUpload());
 
-const fieldsNotNull = (req, res, next) => {
-  if (req.files == null || req.body.title == null || req.body.body) {
-    return res.redirect("/posts/new");
-  }
-  next();
-};
-// app.use(fileUpload())
+mongoose.connect(process.env.MONGODB, { useNewUrlParser: true });
 
-// console.log(process.env.LINKEDIN);
+// app.use(pages.maint);
 
-const notfound = (req, res, next) => {
-  // res.status(404).send("Not found");
-  res.status(404).render("404");
-};
+app.get("/about", pages.about);
+app.get("/contact", pages.contact);
+app.get("/posts/new", pages.create);
 
-const maint = (req, res) => {
-  res.send("Site Under Maintenance, please try back later!");
-};
+app.get("/", posts.home);
+app.get("/post/:id", posts.getPost);
+app.post("/posts/store", posts.fieldsNotNull, posts.storePost);
 
-// app.use(maint);
-
-app.get("/", async (req, res) => {
-  const blogposts = await BlogPost.find({});
-  // console.log(blogposts);
-  res.render("index", { blogposts });
-});
-app.get("/about", (req, res) => {
-  res.render("about");
-});
-app.get("/contact", (req, res) => {
-  res.render("contact");
-});
-app.get("/posts/new", (req, res) => {
-  res.render("create");
-});
-app.get("/post/:id", async (req, res) => {
-  // console.log(req.params.id);
-  try {
-    const blogpost = await BlogPost.findById(req.params.id);
-    // console.log({ blogpost });
-    if (blogpost) {
-      return res.render("post", { blogpost });
-    } else {
-      res.status(404).render("404");
-    }
-  } catch {
-    res.status(404).render("404");
-  }
-});
-app.post("/posts/store", fileUpload(), fieldsNotNull, (req, res) => {
-  // try {
-  let image = req.files.image;
-  image.mv(
-    path.resolve(__dirname, "public/upload/img", image.name),
-    async error => {
-      await BlogPost.create({
-        ...req.body,
-        image: "/upload/img/" + image.name,
-      });
-      res.redirect("/");
-    }
-  );
-});
-
-app.get("/register", (req, res) => {
-  res.render("register");
-});
-
+app.get("/register", pages.registerForm);
 app.post("/register", (req, res) => {
   res.json(req.body);
 });
 
-app.get("/login", (req, res) => {
-  res.render("login");
-});
-
+app.get("/login", pages.loginForm);
 app.post("/login", (req, res) => {
   res.json(req.body);
 });
 
-app.get("/reset", (req, res) => {
-  res.render("reset");
-});
-
+app.get("/reset", pages.resetForm);
 app.post("/reset", (req, res) => {
   res.json(req.body);
 });
 
-app.use(notfound);
+app.use(pages.notfound);
 
-app.listen(3000, "0.0.0.0", () => {
-  console.log("App listening on localhost:3000");
+const { PORT, INTERFACE } = process.env;
+app.listen(PORT, INTERFACE, () => {
+  console.log(`App "Your blog" listening on ${INTERFACE}:${PORT}`);
 });
