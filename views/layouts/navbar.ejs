@@ -15,6 +15,23 @@
                     <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="/posts/new">New Post</a></li>
                     <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="/logout">Log Out <i
                                 class="fa-solid fa-arrow-right-from-bracket"></i></a></li>
+                    <li class="list-inline-item">
+                        <a href="<%=process.env.LINKEDIN%>" target="_NEW">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <!-- <i class="fab fa-facebook-f fa-stack-1x fa-inverse"></i> -->
+                                <i class="fa-brands fa-linkedin fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    <li class="list-inline-item">
+                        <a href="<%=process.env.GITHUB%>" target="_NEW">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
                     <% } %>
 
                         <% if(!loggedIn){ %>

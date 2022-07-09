@@ -18,7 +18,15 @@ const redirectIfAuthenticated = (req, res, next) => {
   next();
 };
 
+const checkPreauth = (req, res, next) => {
+  if (req.body.preauth !== process.env.PREAUTH_REGCODE) {
+    return res.status(401).render("401");
+  }
+  next();
+};
+
 module.exports = {
   authRequired,
   redirectIfAuthenticated,
+  checkPreauth,
 };

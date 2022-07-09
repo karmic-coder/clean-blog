@@ -1,6 +1,7 @@
 require("dotenv").config();
 
 global.loggedIn = null;
+global.preauth = process.env.ENABLE_PREAUTH;
 const express = require("express");
 const helmet = require("helmet");
 const app = new express();
@@ -14,7 +15,11 @@ const users = require("./controllers/users");
 const posts = require("./controllers/posts");
 const pages = require("./controllers/pages");
 
-const { authRequired, redirectIfAuthenticated } = require("./middleware/auth");
+const {
+  authRequired,
+  redirectIfAuthenticated,
+  checkPreauth,
+} = require("./middleware/auth");
 
 app.use(helmet.hidePoweredBy());
 app.use(
@@ -38,7 +43,9 @@ app.use(fileUpload());
 
 mongoose.connect(process.env.MONGODB, { useNewUrlParser: true });
 
-// app.use(pages.maint);
+if (process.env.MAINTENANCE_MODE == "true") {
+  app.use(pages.maint);
+}
 
 // global.loggedIn = null;
 
@@ -51,7 +58,11 @@ app.get("/post/:id", posts.getPost);
 app.post("/posts/store", authRequired, posts.fieldsNotNull, posts.storePost);
 
 app.get("/register", redirectIfAuthenticated, pages.registerForm);
-app.post("/register", redirectIfAuthenticated, users.storeUser);
+if (process.env.ENABLE_PREAUTH == "true") {
+  app.post("/register", redirectIfAuthenticated, checkPreauth, users.storeUser);
+} else {
+  app.post("/register", redirectIfAuthenticated, users.storeUser);
+}
 
 app.get("/login", redirectIfAuthenticated, pages.loginForm);
 app.post("/login", redirectIfAuthenticated, users.loginUser);

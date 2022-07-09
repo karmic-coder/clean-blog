@@ -26,7 +26,7 @@ const loginUser = (req, res) => {
           res.redirect("/");
         } else {
           console.log("login FAILED", error);
-          res.redirect("/login");
+          res.status(401).render("401");
         }
       });
     }

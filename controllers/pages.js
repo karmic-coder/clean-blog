@@ -23,7 +23,7 @@ const notfound = (req, res, next) => {
 };
 
 const maint = (req, res) => {
-  res.send("Site Under Maintenance, please try back later!");
+  res.render("maint");
 };
 
 module.exports = {
