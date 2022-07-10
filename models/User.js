@@ -1,23 +1,31 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+const uniqueValidator = require("mongoose-unique-validator");
 const bcrypt = require("bcrypt");
 
 const UserSchema = new Schema({
   displayname: {
     type: String,
-    unique: true,
-    required: true,
+    unique: [true, "Display name already in use, please try another"],
+    required: [true, "A displayname is required"],
   },
   email: {
     type: String,
-    unique: true,
-    required: true,
+    unique: [true, "This email is already registered, choose another"],
+    required: [true, "Email address is required"],
   },
-  password: String,
+  password: {
+    type: String,
+    required: [true, "You must enter a password"],
+  },
   admin: {
     type: Boolean,
     default: false,
   },
+});
+
+UserSchema.plugin(uniqueValidator, {
+  message: "{PATH} already in use, please select another.",
 });
 
 UserSchema.pre("save", function (next) {

@@ -1,3 +1,5 @@
+const flash = require("connect-flash");
+
 const about = (req, res) => {
   res.render("about");
 };
@@ -11,7 +13,18 @@ const loginForm = (req, res) => {
   res.render("login");
 };
 const registerForm = (req, res) => {
-  res.render("register");
+  var displayname = "";
+  var email = "";
+  const data = req.flash("data")[0];
+  if (typeof data != "undefined") {
+    displayname = data.displayname;
+    email = data.email;
+  }
+  res.render("register", {
+    errors: req.flash("validationErrors"),
+    displayname,
+    email,
+  });
 };
 const resetForm = (req, res) => {
   res.render("reset");

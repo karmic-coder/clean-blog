@@ -28,48 +28,61 @@
                             <!-- <p>Want to get in touch? Fill out the form below to send me a message and I will get
                                 back to you as
                                 soon as possible!</p> -->
-                            <div class="my-5">
-                                <form action="/register" method="POST">
-                                    <% if(preauth==="true" ) { %>
-                                        <div class="form-floating">
-                                            <input required class="form-control" name="preauth" id="preauth" type="text"
-                                                placeholder="preauth" />
-                                            <!--data-sb-validations="required"
-                                            -->
-                                            <label class="text-danger fw-bold" for="name">PreAuth code is required to
-                                                register</label>
-                                        </div>
+                            <% if(errors!=null && errors.length>0){ %>
+                                <ul style="margin-top:1rem;" class="list">
+                                    <% for(let i=0;i<errors.length;i++){ %>
+                                        <li class="list-group-item list-group-item-danger">
+                                            <%= errors[i] %>
+                                        </li>
                                         <% } %>
-                                            <div class="form-floating">
-                                                <input class="form-control" name="displayname" id="displayname"
-                                                    type="text" placeholder="display name" />
-                                                <!--data-sb-validations="required"
+                                </ul>
+                                <% } %>
+                                    <div class="my-5">
+                                        <form action="/register" method="POST">
+                                            <% if(preauth==="true" ) { %>
+                                                <div class="form-floating">
+                                                    <input required class="form-control" name="preauth" id="preauth"
+                                                        type="text" placeholder="preauth" />
+                                                    <!--data-sb-validations="required"
                                             -->
-                                                <label for="name">Displayname (for posts)</label>
-                                            </div>
-                                            <div class="form-floating">
-                                                <input class="form-control" name="email" id="email" type="text"
-                                                    placeholder="Email" />
-                                                <label for="name">Email</label>
-                                            </div>
-                                            <div class="form-floating">
-                                                <input class="form-control" name="password" id="password"
-                                                    type="password" placeholder="password" />
-                                                <label for="name">Password</label>
-                                            </div>
-                                            <div class="form-floating">
-                                                <input class="form-control" name="passwordConfirm" id="passwordConfirm"
-                                                    type="password" placeholder="passwordConfirm" />
-                                                <label for="name">Confirm Password</label>
-                                            </div>
+                                                    <label class="text-danger fw-bold" for="name">PreAuth code
+                                                        is
+                                                        required to
+                                                        register</label>
+                                                </div>
+                                                <% } %>
+                                                    <div class="form-floating">
+                                                        <input class="form-control" name="displayname" id="displayname"
+                                                            type="text" placeholder="display name"
+                                                            value="<%= displayname%>" />
+                                                        <!--data-sb-validations="required"
+                                            -->
+                                                        <label for="name">Displayname (for posts)</label>
+                                                    </div>
+                                                    <div class="form-floating">
+                                                        <input class="form-control" name="email" id="email" type="text"
+                                                            placeholder="Email" value="<%=email%>" />
+                                                        <label for="name">Email</label>
+                                                    </div>
+                                                    <div class="form-floating">
+                                                        <input class="form-control" name="password" id="password"
+                                                            type="password" placeholder="password" />
+                                                        <label for="name">Password</label>
+                                                    </div>
+                                                    <div class="form-floating">
+                                                        <input class="form-control" name="passwordConfirm"
+                                                            id="passwordConfirm" type="password"
+                                                            placeholder="passwordConfirm" />
+                                                        <label for="name">Confirm Password</label>
+                                                    </div>
 
 
-                                            <br />
+                                                    <br />
 
-                                            <button class="btn btn-primary text-uppercase"
-                                                type="submit">Register</button>
-                                </form>
-                            </div>
+                                                    <button class="btn btn-primary text-uppercase"
+                                                        type="submit">Register</button>
+                                        </form>
+                                    </div>
                         </div>
                     </div>
                 </div>

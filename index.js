@@ -10,6 +10,7 @@ const fileUpload = require("express-fileupload");
 const path = require("path");
 const ejs = require("ejs");
 const bodyParser = require("body-parser");
+const flash = require("connect-flash");
 const session = require("express-session");
 const users = require("./controllers/users");
 const posts = require("./controllers/posts");
@@ -30,6 +31,7 @@ app.use(
     // cookie: { secure: true },
   })
 );
+app.use(flash());
 app.set("trust proxy", 1);
 app.use("*", (req, res, next) => {
   loggedIn = req.session.userId;

@@ -1,16 +1,31 @@
 const bcrypt = require("bcrypt");
 const User = require("../models/User");
 const path = require("path");
+const flash = require("connect-flash");
 
 const storeUser = (req, res) => {
   //   console.log(req.body);
+  if (req.body.password !== req.body.passwordConfirm) {
+    req.flash("validationErrors", ["Password / confirmation does not match"]);
+    req.flash("data", req.body);
+    return res.redirect("register");
+  }
   User.create(req.body, (error, user) => {
     if (error) {
-      console.log(error);
-      return res.redirect("/register");
+      // console.log(error.message);
+      const validationErrors = Object.keys(error.errors).map(
+        key => error.errors[key].message
+      );
+      // req.session.validationErrors = validationErrors;
+      req.flash("validationErrors", validationErrors);
+      req.flash("data", req.body);
+      // console.log(req.flash);
+      // return res.render("register", { errors: req.flash });
+      return res.redirect("register");
+      // return res.json(req.session.validationErrors);
     }
-    console.log(user);
-    res.redirect("/");
+    // console.log(user);
+    res.redirect("/login");
   });
 };
 
