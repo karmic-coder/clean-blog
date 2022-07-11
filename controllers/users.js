@@ -31,21 +31,33 @@ const storeUser = (req, res) => {
 
 const loginUser = (req, res) => {
   const { username, password } = req.body;
-  User.findOne({ username }, (error, user) => {
-    if (user) {
-      bcrypt.compare(password, user.password, (error, same) => {
-        if (same) {
-          //store user session
-          req.session.userId = user._id;
-          //   console.log("login successful", req.session.userId);
-          res.redirect("/");
-        } else {
-          console.log("login FAILED", error);
-          res.status(401).render("401");
-        }
-      });
-    }
-  });
+  // console.log(username, password);
+  if (!username && !password) {
+    req.flash("badLogin", "You must enter an email and password to login");
+    return res.redirect("login");
+  } else {
+    User.findOne({ username }, (error, user) => {
+      if (user) {
+        bcrypt.compare(password, user.password, (error, same) => {
+          if (same) {
+            //store user session
+            req.session.userId = user._id;
+            //   console.log("login successful", req.session.userId);
+            res.redirect("/");
+          }
+          // else {
+          //   }
+          else {
+            req.flash("badLogin", "Invalid email or password");
+            // }
+            // console.log("login FAILED", error);
+            // res.status(401).render("401");
+            res.redirect("login");
+          }
+        });
+      }
+    });
+  }
 };
 
 const logoutUser = (req, res) => {

@@ -28,27 +28,35 @@
                             <!-- <p>Want to get in touch? Fill out the form below to send me a message and I will get
                                 back to you as
                                 soon as possible!</p> -->
-                            <div class="my-5">
-                                <form action="/login" method="POST">
-                                    <div class="form-floating">
-                                        <input class="form-control" name="email" id="email" type="text"
-                                            placeholder="Email" />
-                                        <label for="name">Email</label>
-                                    </div>
-                                    <div class="form-floating">
-                                        <input class="form-control" name="password" id="password" type="password"
-                                            placeholder="password" />
-                                        <label for="name">Password</label>
-                                    </div>
+                            <% if(badLogin!=null && badLogin.length>0){%>
+                                <ul style="margin-top:1rem;" class="list">
+                                    <li class="list-group-item list-group-item-danger">
+                                        <%= badLogin %>
+                                    </li>
+                                </ul>
+                                <% } %>
+                                    <div class="my-3">
+                                        <form action="/login" method="POST">
+                                            <div class="form-floating">
+                                                <input class="form-control" name="email" id="email" type="text"
+                                                    placeholder="Email" />
+                                                <label for="name">Email</label>
+                                            </div>
+                                            <div class="form-floating">
+                                                <input class="form-control" name="password" id="password"
+                                                    type="password" placeholder="password" />
+                                                <label for="name">Password</label>
+                                            </div>
 
-                                    <br />
+                                            <br />
 
-                                    <button class="btn btn-primary text-uppercase" type="submit">Login</button>
-                                    <!-- </form> -->
-                                    <br />
-                                    <div><small class="text-muted"><a href="/reset">Forgot password?</a></small></div>
-                                </form>
-                            </div>
+                                            <button class="btn btn-primary text-uppercase" type="submit">Login</button>
+                                            <!-- </form> -->
+                                            <br />
+                                            <div><small class="text-muted"><a href="/reset">Forgot password?</a></small>
+                                            </div>
+                                        </form>
+                                    </div>
                         </div>
                     </div>
                 </div>

@@ -1,5 +1,3 @@
-const flash = require("connect-flash");
-
 const about = (req, res) => {
   res.render("about");
 };
@@ -10,7 +8,9 @@ const create = (req, res) => {
   res.render("create");
 };
 const loginForm = (req, res) => {
-  res.render("login");
+  const badLogin = req.flash("badLogin");
+  // console.log(badLogin);
+  res.render("login", { badLogin });
 };
 const registerForm = (req, res) => {
   var displayname = "";
