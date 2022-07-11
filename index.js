@@ -48,7 +48,8 @@ mongoose.connect(process.env.MONGODB, { useNewUrlParser: true });
 if (process.env.MAINTENANCE_MODE == "true") {
   app.use(pages.maint);
 }
-
+// const hashcodes = require("./middleware/hashcodes");
+// console.log(hashcodes.makePreAuthCode("user@example.com"));
 // global.loggedIn = null;
 
 app.get("/about", pages.about);

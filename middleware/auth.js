@@ -1,4 +1,10 @@
 const User = require("../models/User");
+const {
+  verifyCode,
+  verifyPreauth,
+  makePreAuthCode,
+  makeVerificationCode,
+} = require("./hashcodes");
 
 const authRequired = (req, res, next) => {
   User.findById(req.session.userId, (error, user) => {
@@ -19,7 +25,9 @@ const redirectIfAuthenticated = (req, res, next) => {
 };
 
 const checkPreauth = (req, res, next) => {
-  if (req.body.preauth !== process.env.PREAUTH_REGCODE) {
+  // if (req.body.preauth !== process.env.PREAUTH_REGCODE) {
+  const prechecked = verifyPreauth(req.body.email, req.body.preauth);
+  if (!prechecked) {
     return res.status(401).render("401");
   }
   next();
