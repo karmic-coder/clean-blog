@@ -37,7 +37,11 @@ const loginUser = (req, res) => {
     return res.redirect("login");
   } else {
     User.findOne({ email }, (error, user) => {
-      if (user) {
+      // console.log(user);
+      if (user === null) {
+        req.flash("badLogin", "Invalid email or password");
+        res.redirect("login");
+      } else if (user) {
         bcrypt.compare(password, user.password, (error, same) => {
           if (same) {
             //store user session
