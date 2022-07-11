@@ -30,13 +30,13 @@ const storeUser = (req, res) => {
 };
 
 const loginUser = (req, res) => {
-  const { username, password } = req.body;
-  // console.log(username, password);
-  if (!username && !password) {
+  const { email, password } = req.body;
+  // console.log(email, password);
+  if (!email && !password) {
     req.flash("badLogin", "You must enter an email and password to login");
     return res.redirect("login");
   } else {
-    User.findOne({ username }, (error, user) => {
+    User.findOne({ email }, (error, user) => {
       if (user) {
         bcrypt.compare(password, user.password, (error, same) => {
           if (same) {
