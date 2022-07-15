@@ -27,7 +27,7 @@ const redirectIfAuthenticated = (req, res, next) => {
 const checkPreauth = (req, res, next) => {
   // if (req.body.preauth !== process.env.PREAUTH_REGCODE) {
   const prechecked = verifyPreauth(req.body.email, req.body.preauth);
-  if (!prechecked) {
+  if (!prechecked || !prechecked.valid) {
     return res.status(401).render("401");
   }
   next();

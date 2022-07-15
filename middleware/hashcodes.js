@@ -7,22 +7,30 @@ const makeCode = (email, expiry, codeType) => {
   //   const expires = created[Symbol.toPrimitive]("number") + 599905;
   const expiryTextMsg = `${codeType} Code Expires: ${new Date(
     expires
-  ).toLocaleString()}`;
+  ).toString()}`;
   const hash = crypto.createHash("sha256");
+  const hash2 = crypto.createHash("sha256");
   const combined = `${seed}${email}${expires}`;
   hash.update(combined);
+  hash2.update(email);
   const details = {
     email,
     expires,
     sha256: hash.digest("hex"),
+    emailSha: hash2.digest("hex"),
   };
+  // console.log(details, hEmail);
   const jsondetails = JSON.stringify(details);
   if (codeType == "confirmation") {
     return { code: btoa(jsondetails), msg: expiryTextMsg };
   } else if (codeType == "preauth") {
     details.msg = expiryTextMsg;
-    details.preauth = `${expires}:${details.sha256.slice(0, 13)}`;
+    details.preauth = `${expires}:${details.emailSha.slice(
+      0,
+      8
+    )}:${details.sha256.slice(0, 8)}`;
     delete details.sha256;
+    delete details.emailSha;
     delete details.expires;
     return details;
   }
@@ -40,7 +48,7 @@ const verifyCode = b64Code => {
     // console.log(new Date(expires).toLocaleTimeString());
     const expiryTextMsg = `Confirmation Code Expires: ${new Date(
       expires
-    ).toLocaleString()}`;
+    ).toString()}`;
     hash.update(combined);
     const hashed = hash.digest("hex");
     if (hashed === sha256 && Date.now() < expires) {
@@ -48,7 +56,7 @@ const verifyCode = b64Code => {
         email,
         expires,
         sha256,
-        preauth: sha256.slice(0, 13),
+        preauth: sha256.slice(0, 8),
         msg: expiryTextMsg,
       };
     } else {
@@ -82,21 +90,38 @@ const makePreAuthCode = email => {
 };
 
 const verifyPreauth = (email, preauthCode) => {
-  const [expires, shortsha] = preauthCode.split(":");
+  const [expires, emailSha, shortsha] = preauthCode.split(":");
   //   console.log(expires, shortsha);
   const seed = process.env.CRYPTO_SEED;
   const hash = crypto.createHash("sha256");
+  const hash2 = crypto.createHash("sha256");
   const combined = `${seed}${email}${expires}`;
   // console.log(new Date(expires).toLocaleTimeString());
   const expiryTextMsg = `Confirmation Code Expires: ${new Date(
     expires
-  ).toLocaleString()}`;
+  ).toString()}`;
   hash.update(combined);
+  hash2.update(email);
   const hashed = hash.digest("hex");
-  if (hashed.slice(0, 13) === shortsha && Date.now() < expires) {
-    return email;
+  const emailHash = hash2.digest("hex");
+
+  const eValid = {};
+  if (emailHash.slice(0, 8) === emailSha) {
+    eValid.eValid = "✅";
+    eValid.email = email;
   } else {
-    return false;
+    eValid.eValid = "❌";
+    eValid.email = `invalid email`;
+  }
+
+  const isValid =
+    (emailHash.slice(0, 8) === emailSha && hashed.slice(0, 8)) === shortsha &&
+    Date.now() < expires;
+  if (isValid) {
+    const pValid = { pValid: "✅", preauthCode };
+    return Object.assign({ valid: true, pValid: "✅", preauthCode }, eValid);
+  } else {
+    return Object.assign({ valid: false, pValid: "❌", preauthCode }, eValid);
   }
 };
 
