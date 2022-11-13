@@ -45,6 +45,24 @@ app.use(fileUpload());
 
 mongoose.connect(process.env.MONGODB, { useNewUrlParser: true });
 
+if (process.env.MONGO_USER && process.env.MONGO_PASS !== undefined) {
+  console.log("**MONGO AUTH ENABLED**");
+  mongoose.connect(`${process.env.MONGODB}`, {
+    auth: {
+      username: `${process.env.MONGO_USER}`,
+      password: `${process.env.MONGO_PASS}`,
+    },
+    authSource: "admin",
+    useUnifiedTopology: true,
+    useNewUrlParser: true,
+  });
+} else {
+  mongoose.connect(`${process.env.MONGODB}`, {
+    useUnifiedTopology: true,
+    useNewUrlParser: true,
+  });
+}
+
 if (process.env.MAINTENANCE_MODE == "true") {
   app.use(pages.maint);
 }
