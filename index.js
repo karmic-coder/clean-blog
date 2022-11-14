@@ -1,4 +1,14 @@
 require("dotenv").config();
+const {
+  MONGODB,
+  MONGO_USER,
+  MONGO_PASS,
+  PORT,
+  INTERFACE,
+  SITENAME,
+  MAINTENANCE_MODE,
+  ENABLE_PREAUTH,
+} = process.env;
 
 global.loggedIn = null;
 global.preauth = process.env.ENABLE_PREAUTH;
@@ -15,6 +25,14 @@ const session = require("express-session");
 const users = require("./controllers/users");
 const posts = require("./controllers/posts");
 const pages = require("./controllers/pages");
+const genuuid = require("uid-safe");
+
+// const crypto = require("crypto");
+// const genuuid = async () => {
+//   console.log(await crypto.randomUUID({ disableEntropyCache: true }));
+// };
+
+// genuuid();
 
 const {
   authRequired,
@@ -25,6 +43,9 @@ const {
 app.use(helmet.hidePoweredBy());
 app.use(
   session({
+    genid: function (req) {
+      return genuuid.sync(18);
+    },
     secret: process.env.SESSION_SECRET,
     saveUninitialized: true,
     resave: false,
@@ -35,6 +56,7 @@ app.use(flash());
 app.set("trust proxy", 1);
 app.use("*", (req, res, next) => {
   loggedIn = req.session.userId;
+  // console.log(req.session);
   next();
 });
 app.use(express.static("public"));
@@ -43,27 +65,28 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(fileUpload());
 
-mongoose.connect(process.env.MONGODB, { useNewUrlParser: true });
+// mongoose.connect(MONGODB, { useNewUrlParser: true });
 
-if (process.env.MONGO_USER && process.env.MONGO_PASS !== undefined) {
-  console.log("**MONGO AUTH ENABLED**");
-  mongoose.connect(`${process.env.MONGODB}`, {
+if (MONGO_USER && MONGO_PASS !== undefined) {
+  mongoose.connect(MONGODB, {
     auth: {
-      username: `${process.env.MONGO_USER}`,
-      password: `${process.env.MONGO_PASS}`,
+      username: MONGO_USER,
+      password: MONGO_PASS,
     },
     authSource: "admin",
     useUnifiedTopology: true,
     useNewUrlParser: true,
   });
+  console.log("**MONGO AUTH ENABLED**");
 } else {
-  mongoose.connect(`${process.env.MONGODB}`, {
+  mongoose.connect(MONGODB, {
     useUnifiedTopology: true,
     useNewUrlParser: true,
   });
+  console.log("*MONGO AUTH is DISABLED!*");
 }
 
-if (process.env.MAINTENANCE_MODE == "true") {
+if (MAINTENANCE_MODE == "true") {
   app.use(pages.maint);
 }
 // const hashcodes = require("./middleware/hashcodes");
@@ -79,7 +102,7 @@ app.get("/post/:id", posts.getPost);
 app.post("/posts/store", authRequired, posts.fieldsNotNull, posts.storePost);
 
 app.get("/register", redirectIfAuthenticated, pages.registerForm);
-if (process.env.ENABLE_PREAUTH == "true") {
+if (ENABLE_PREAUTH == "true") {
   app.post("/register", redirectIfAuthenticated, checkPreauth, users.storeUser);
 } else {
   app.post("/register", redirectIfAuthenticated, users.storeUser);
@@ -101,7 +124,6 @@ app.use(pages.notfound);
 //   next();
 // });
 
-const { PORT, INTERFACE } = process.env;
 app.listen(PORT, INTERFACE, () => {
-  console.log(`App "Your blog" listening on ${INTERFACE}:${PORT}`);
+  console.log(`App "${SITENAME}" listening on ${INTERFACE}:${PORT}`);
 });

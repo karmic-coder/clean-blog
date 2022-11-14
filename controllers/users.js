@@ -14,7 +14,7 @@ const storeUser = (req, res) => {
     if (error) {
       // console.log(error.message);
       const validationErrors = Object.keys(error.errors).map(
-        key => error.errors[key].message
+        (key) => error.errors[key].message
       );
       // req.session.validationErrors = validationErrors;
       req.flash("validationErrors", validationErrors);
@@ -46,6 +46,7 @@ const loginUser = (req, res) => {
           if (same) {
             //store user session
             req.session.userId = user._id;
+            req.session.isAdmin = user.admin;
             //   console.log("login successful", req.session.userId);
             res.redirect("/");
           }

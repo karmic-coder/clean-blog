@@ -35,6 +35,10 @@ UserSchema.pre("save", function (next) {
     user.password = hash;
     next();
   });
+
+  if (user.email == `${process.env.ADMIN_EMAIL}`) {
+    user.admin = true;
+  }
 });
 
 const User = mongoose.model("User", UserSchema);
