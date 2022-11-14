@@ -47,6 +47,7 @@ const loginUser = (req, res) => {
             //store user session
             req.session.userId = user._id;
             req.session.isAdmin = user.admin;
+            req.session.displayName = user.displayname;
             //   console.log("login successful", req.session.userId);
             res.redirect("/");
           }
