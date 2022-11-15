@@ -33,15 +33,17 @@ const checkPreauth = (req, res, next) => {
   next();
 };
 
-// const checkAdmin=(req,res,next)=>{
-//   if(req.session.userId){
-
-//   }
-//   next();
-// }
+const checkAdmin = (req, res, next) => {
+  if (!req.session.isAdmin) {
+    isAdmin = false;
+    return res.redirect("/");
+  }
+  next();
+};
 
 module.exports = {
   authRequired,
   redirectIfAuthenticated,
   checkPreauth,
+  checkAdmin,
 };

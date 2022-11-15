@@ -10,6 +10,7 @@ const {
   ENABLE_PREAUTH,
 } = process.env;
 
+global.isAdmin = false;
 global.loggedIn = null;
 global.preauth = process.env.ENABLE_PREAUTH;
 const express = require("express");
@@ -25,6 +26,7 @@ const session = require("express-session");
 const users = require("./controllers/users");
 const posts = require("./controllers/posts");
 const pages = require("./controllers/pages");
+const { makeAuth } = require("./controllers/makepreauth");
 const genuuid = require("uid-safe");
 
 // const crypto = require("crypto");
@@ -38,6 +40,7 @@ const {
   authRequired,
   redirectIfAuthenticated,
   checkPreauth,
+  checkAdmin,
 } = require("./middleware/auth");
 
 app.use(helmet.hidePoweredBy());
@@ -56,9 +59,11 @@ app.use(flash());
 app.set("trust proxy", 1);
 app.use("*", (req, res, next) => {
   loggedIn = req.session.userId;
+  isAdmin = req.session.isAdmin;
   // console.log(req.session);
   next();
 });
+// app.use(checkAdmin);
 app.use(express.static("public"));
 app.set("view engine", "ejs");
 app.use(bodyParser.json());
@@ -94,6 +99,8 @@ if (MAINTENANCE_MODE == "true") {
 // global.loggedIn = null;
 
 app.get("/about", pages.about);
+app.get("/issuePreauth", checkAdmin, pages.preauth);
+app.post("/issuePreauth", checkAdmin, makeAuth);
 app.get("/contact", authRequired, pages.contact);
 app.get("/posts/new", authRequired, pages.create);
 

@@ -7,6 +7,10 @@ const contact = (req, res) => {
 const create = (req, res) => {
   res.render("create");
 };
+const preauth = (req, res) => {
+  const newPreauth = { email: "", msg: "", preauth: "" };
+  res.render("preauth", { newPreauth });
+};
 const loginForm = (req, res) => {
   const badLogin = req.flash("badLogin");
   // console.log(badLogin);
@@ -43,6 +47,7 @@ module.exports = {
   about,
   contact,
   create,
+  preauth,
   loginForm,
   registerForm,
   resetForm,

@@ -1,5 +1,37 @@
-@import url('https://fonts.googleapis.com/css2?family=Kaushan+Script&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Kaushan+Script&display=swap");
 
-.navbar-brand{
-    font-family: 'Kaushan Script', cursive;
+.navbar-brand {
+  font-family: "Kaushan Script", cursive;
+}
+
+.admin-text {
+  color: red !important;
+}
+.admin-text:hover {
+  font-weight: bold !important;
+}
+
+#preauthMsg {
+  margin: 2rem 0 !important;
+}
+
+#preauthMsg code {
+  color: green !important;
+}
+
+#preauthMsg li {
+  list-style: none;
+  padding: 0;
+}
+
+#preauthMsg ul {
+  margin: 0;
+  padding: 0;
+}
+
+#preauthMsg span {
+  padding: 0.2rem 1rem;
+  background: green;
+  color: white;
+  font-weight: 700;
 }

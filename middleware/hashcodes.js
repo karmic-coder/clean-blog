@@ -5,7 +5,7 @@ const makeCode = (email, expiry, codeType) => {
   const created = new Date();
   const expires = created[Symbol.toPrimitive]("number") + expiry;
   //   const expires = created[Symbol.toPrimitive]("number") + 599905;
-  const expiryTextMsg = `${codeType} Code Expires: ${new Date(
+  const expiryTextMsg = `Your ${codeType} Code Expires: ${new Date(
     expires
   ).toString()}`;
   const hash = crypto.createHash("sha256");
@@ -36,7 +36,7 @@ const makeCode = (email, expiry, codeType) => {
   }
 };
 
-const verifyCode = b64Code => {
+const verifyCode = (b64Code) => {
   try {
     const decode = atob(b64Code);
     // console.log(decode);
@@ -73,7 +73,7 @@ const verifyCode = b64Code => {
 /* 
 makeVerificationCode with 10 minute expiry for email verification and password resets
 */
-const makeVerificationCode = email => {
+const makeVerificationCode = (email) => {
   const expiry = 599905; // 10 minutes
   const codeType = "confirmation";
   return makeCode(email, expiry, codeType);
@@ -82,7 +82,7 @@ const makeVerificationCode = email => {
 /* 
 makePreAuthCode with 1 day expiry for preAuthroization registration code
 */
-const makePreAuthCode = email => {
+const makePreAuthCode = (email) => {
   //   const expiry = 599905; // 10 minute for testing purposes
   const expiry = 86386320; // 24 hours
   const codeType = "preauth";
