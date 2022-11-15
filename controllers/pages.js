@@ -13,12 +13,21 @@ const preauth = (req, res) => {
 };
 const loginForm = (req, res) => {
   const badLogin = req.flash("badLogin");
+  const goodLogin = req.flash("goodLogin");
   // console.log(badLogin);
-  res.render("login", { badLogin });
+  res.render("login", { badLogin, goodLogin });
 };
 const registerForm = (req, res) => {
+  // console.log(req.query);
   var displayname = "";
-  var email = "";
+  if (req.query.preauth) {
+    var preauth = req.query.preauth;
+  }
+  if (req.query.email) {
+    var email = req.query.email;
+  } else {
+    var email = "";
+  }
   const data = req.flash("data")[0];
   if (typeof data != "undefined") {
     displayname = data.displayname;
@@ -28,6 +37,7 @@ const registerForm = (req, res) => {
     errors: req.flash("validationErrors"),
     displayname,
     email,
+    preauth,
   });
 };
 const resetForm = (req, res) => {

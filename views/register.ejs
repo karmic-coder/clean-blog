@@ -39,10 +39,10 @@
                                 <% } %>
                                     <div class="my-5">
                                         <form action="/register" method="POST">
-                                            <% if(preauth==="true" ) { %>
+                                            <% if(enablePreauth==="true" ) { %>
                                                 <div class="form-floating">
                                                     <input required class="form-control" name="preauth" id="preauth"
-                                                        type="text" placeholder="preauth" />
+                                                        type="text" placeholder="preauth" value="<%=preauth%>" />
                                                     <!--data-sb-validations="required"
                                             -->
                                                     <label class="text-danger fw-bold" for="name">PreAuth code

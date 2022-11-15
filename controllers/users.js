@@ -25,7 +25,9 @@ const storeUser = (req, res) => {
       // return res.json(req.session.validationErrors);
     }
     // console.log(user);
-    res.redirect("/login");
+    req.flash("goodLogin", "Account Created, Please Login");
+    // res.redirect("/login");
+    return res.redirect("/login");
   });
 };
 

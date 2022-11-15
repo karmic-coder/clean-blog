@@ -12,7 +12,7 @@ const {
 
 global.isAdmin = false;
 global.loggedIn = null;
-global.preauth = process.env.ENABLE_PREAUTH;
+global.enablePreauth = ENABLE_PREAUTH;
 const express = require("express");
 const helmet = require("helmet");
 const app = new express();

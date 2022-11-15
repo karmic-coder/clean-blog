@@ -35,29 +35,38 @@
                                     </li>
                                 </ul>
                                 <% } %>
-                                    <div class="my-3">
-                                        <form action="/login" method="POST">
-                                            <div class="form-floating">
-                                                <input class="form-control" name="email" id="email" type="text"
-                                                    placeholder="Email" autocomplete="email" />
-                                                <label for="name">Email</label>
-                                            </div>
-                                            <div class="form-floating">
-                                                <input class="form-control" name="password" id="password"
-                                                    type="password" placeholder="password"
-                                                    autocomplete="current-password" />
-                                                <label for="name">Password</label>
-                                            </div>
+                                    <% if(goodLogin!=null && goodLogin.length>0){%>
+                                        <ul style="margin-top:1rem;" class="list">
+                                            <li class="list-group-item list-group-item-success">
+                                                <%= goodLogin %>
+                                            </li>
+                                        </ul>
+                                        <% } %>
+                                            <div class="my-3">
+                                                <form action="/login" method="POST">
+                                                    <div class="form-floating">
+                                                        <input class="form-control" name="email" id="email" type="text"
+                                                            placeholder="Email" autocomplete="email" />
+                                                        <label for="name">Email</label>
+                                                    </div>
+                                                    <div class="form-floating">
+                                                        <input class="form-control" name="password" id="password"
+                                                            type="password" placeholder="password"
+                                                            autocomplete="current-password" />
+                                                        <label for="name">Password</label>
+                                                    </div>
 
-                                            <br />
+                                                    <br />
 
-                                            <button class="btn btn-primary text-uppercase" type="submit">Login</button>
-                                            <!-- </form> -->
-                                            <br />
-                                            <div><small class="text-muted"><a href="/reset">Forgot password?</a></small>
+                                                    <button class="btn btn-primary text-uppercase"
+                                                        type="submit">Login</button>
+                                                    <!-- </form> -->
+                                                    <br />
+                                                    <div><small class="text-muted"><a href="/reset">Forgot
+                                                                password?</a></small>
+                                                    </div>
+                                                </form>
                                             </div>
-                                        </form>
-                                    </div>
                         </div>
                     </div>
                 </div>
