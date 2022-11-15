@@ -31,13 +31,19 @@
                                 <form action="/posts/store" method="POST" enctype="multipart/form-data">
                                     <div class="form-floating">
                                         <input class="form-control" name="title" id="title" type="text"
-                                            placeholder="Enter your blog title..." />
+                                            placeholder="Enter your blog title..." required />
                                         <label for="name">Title</label>
                                     </div>
                                     <div class="form-floating">
+                                        <input class="form-control" name="subheading" id="subheading" type="text"
+                                            placeholder="subheading" />
+                                        <label for="name">Subheading</label>
+                                    </div>
+                                    <div class="form-floating">
                                         <textarea class="form-control" name="body" id="body"
-                                            placeholder="Enter your message here..." style="height: 12rem"></textarea>
-                                        <label for="message">Description</label>
+                                            placeholder="Enter your message here..." style="height: 12rem"
+                                            required></textarea>
+                                        <label for="message">Body Content</label>
                                     </div>
                                     <div class="control-group">
                                         <div class="form-group floating-label-form-group control">

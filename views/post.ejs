@@ -15,11 +15,13 @@
                                 <h1>
                                     <%=blogpost.title%>
                                 </h1>
-                                <h2 class="subheading">(subheading)</h2>
+                                <h2 class="subheading">
+                                    <%=blogpost.subheading %>
+                                </h2>
                                 <span class="meta">
                                     Posted by
                                     <a href="#!">
-                                        <%=blogpost.username%>
+                                        <%=blogpost.userid.displayname%>
                                     </a>
                                     on <%=blogpost.datePosted.toDateString()%>
                                 </span>

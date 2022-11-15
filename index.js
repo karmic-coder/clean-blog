@@ -105,7 +105,7 @@ app.get("/contact", authRequired, pages.contact);
 app.get("/posts/new", authRequired, pages.create);
 
 app.get("/", posts.home);
-app.get("/post/:id", posts.getPost);
+app.get("/post/:slug", posts.getPost);
 app.post("/posts/store", authRequired, posts.fieldsNotNull, posts.storePost);
 
 app.get("/register", redirectIfAuthenticated, pages.registerForm);

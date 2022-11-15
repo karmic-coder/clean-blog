@@ -10,13 +10,21 @@ const fieldsNotNull = (req, res, next) => {
 };
 
 const home = async (req, res) => {
-  const blogposts = await BlogPost.find({});
+  const blogposts = await BlogPost.find({}).populate(
+    "userid",
+    "displayname admin"
+  );
+  // .select("displayname email admin");
+  // console.log(blogposts);
   res.render("index", { blogposts });
 };
 
 const getPost = async (req, res) => {
   try {
-    const blogpost = await BlogPost.findById(req.params.id);
+    const blogpost = await BlogPost.findOne({ slug: req.params.slug }).populate(
+      "userid",
+      "displayname admin"
+    );
     // console.log({ blogpost });
     if (blogpost) {
       return res.render("post", { blogpost });
@@ -36,10 +44,11 @@ const storePost = (req, res) => {
   //   }
   image.mv(
     path.resolve(__dirname, "../public/upload/img", image.name),
-    async error => {
+    async (error) => {
       await BlogPost.create({
         ...req.body,
         image: "/upload/img/" + image.name,
+        userid: req.session.userId,
       });
       res.redirect("/");
     }
