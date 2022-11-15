@@ -3,4 +3,4 @@ startbootstrap-clean-blog-gh-pages.zip
 node_modules/
 testbed/
 .env
-public/upload/
+public/upload/img/
